@@ -121,9 +121,88 @@ int count;
 	 	if(a->left==b) a->parent->left= b;
 		else a->parent->right= b;	
 	}
-	void pop(int a, int b){
-		replace_at_parent(search(a),search(b));
-	}
+	
+	void binary_delete(Node * curr, int key)
+	{
+		if(curr == NULL)
+		{
+			cout<<"BST is empty or does not have that element"<<endl;
+		}
+		else if(key < curr->data)
+		{
+			binary_delete(curr->left,key);
+		}
+		else if(key > curr->data)
+		{
+			binary_delete(curr->right,key);
+		}
+		else
+		{
+			//having no child
+			if(curr->left == NULL && curr->right == NULL)
+			{
+				if(root->left == NULL && root->right == NULL)
+				{
+					delete root;
+					root = NULL;
+				}
+				else
+				{
+					if(curr->parent->data < curr->data)
+					{
+						curr->parent->right = NULL;
+						delete curr;
+					}
+					else if(curr->parent->data >curr->data)
+					{
+						curr->parent->left = NULL;
+						delete curr;
+					}
+					else 
+					{
+						curr->parent->right = NULL;
+						delete curr;
+					}
+				}
+			}
+			//havig one child
+			else if(curr->left== NULL || curr->right == NULL)
+			{
+					if(curr == root)
+					{
+						if(curr->left == NULL)
+						{
+							root = curr->right;
+						}
+						else
+						{
+							root = curr->left;
+						}
+					}
+					else{
+					Node * temp = curr;
+					if(curr->right != NULL)
+					{
+						replace_at_parent(curr,curr->right);
+					}
+					else
+					{
+						replace_at_parent(curr,curr->left);
+					}
+					delete temp;
+					}
+			}
+			//having two child
+			else
+			{
+				Node * temp = findmin(curr->right);
+				int c;
+				c = temp->data;
+				binary_delete(curr->right,temp->data);
+				curr->data = c;
+			}
+		}
+}
 
 };
 
@@ -145,7 +224,26 @@ cout<<"The nos of elements in the tree is :-"<<b.Count()<<endl;
 cout<<"the height of the tree is :- "<<b.height()<<endl;
 cout<<"the minimum element of the tree is :- "<<b.find_min(b.root)->data<<endl;
 cout<<"the maximum element of the tree is :- "<<b.find_max(b.root)->data<<endl;
-b.pop(7,8);
+bst1.print2D();
+    bst1.binary_delete(bst1.root,5);
+    bst1.print2D();
+    bst1.binary_delete(bst1.root,6);
+    bst1.print2D();
+    cout << "Deleting 2" << endl;
+    bst1.binary_delete(bst1.root,2);
+    bst1.print2D();
+    bst1.binary_delete(bst1.root,4);
+    bst1.print2D();
+    bst1.binary_delete(bst1.root,7);
+    bst1.print2D();
+    bst1.binary_delete(bst1.root,8);
+    bst1.print2D();
+    bst1.binary_delete(bst1.root,3);
+    bst1.print2D();
+    bst1.binary_delete(bst1.root,1);
+    bst1.print2D();
+    bst1.binary_delete(bst1.root,1);
+bst1.print2D();
 
 return 0;
 }
